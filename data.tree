@@ -2,12 +2,10 @@ input
 	raw
 		sub-{subject}
 			anat
-				sub-{subject}_ses-{ses}_T1w.nii.gz
-				sub-{subject}_ses-{ses}_FLAIR.nii.gz
-
+				sub-{subject}_ses-{ses}_T1w.nii.gz (T1w)
+				sub-{subject}_ses-{ses}_FLAIR.nii.gz (FLAIR)
 			masks
-				sub-{subject}_TUM.nii.gz	
-		
+				sub-{subject}_TUM.nii.gz (TUM)
 			dwi
 				sub-{subject}_ses-{ses}_dwi.nii.gz
 				sub-{subject}_ses-{ses}_dwi.bvals
@@ -15,31 +13,29 @@ input
 output
 	derivatives
 		sub-{subject}
-                	anat
-				sub-{subject}_ses-{ses}_T1w_brain.nii.gz
-				sub-{subject}_ses-{ses}_T1w_brain_mask.nii.gz
-				sub_{subject}_ses-{ses}_T1w_brain_NT.nii.gz
-				sub_{subject}_ses-{ses}_T1w_brain_NT_bias.nii.gz
-				sub_{subject}_ses-{ses}_T1w_brain_NT_mixeltype.nii.gz
-				sub_{subject}_ses-{ses}_T1w_brain_NT_pveseg.nii.gz
-				sub_{subject}_ses-{ses}_T1w_brain_NT_pve_2.nii.gz
-				sub_{subject}_ses-{ses}_T1w_brain_NT_pve_1.nii.gz
-				sub_{subject}_ses-{ses}_T1w_brain_NT_pve_0.nii.gz
-			masks   
-        	                sub-{subject}_TUM_inv.nii.gz
-				sub-{subject}_TUM_in_T1w.nii.gz
-				sub-{subject}_TUM_in_T1w_bin.nii.gz
-				sub-{subject}_TUM_in_diff.nii.gz
-				sub-{subject}_TUM_in_diff_thr_bin.nii.gz
+			anat
+				sub-{subject}_ses-{ses}_T1w_brain.nii.gz (T1w_brain)
+				sub-{subject}_ses-{ses}_T1w_brain_mask.nii.gz (T1w_brain_mask)
+				sub-{subject}_ses-{ses}_T1w_brain_NT.nii.gz (T1w_NT)
+				sub-{subject}_ses-{ses}_T1w_brain_NT_bias.nii.gz (BF)
+				sub-{subject}_ses-{ses}_T1w_brain_NT_mixeltype.nii.gz
+				sub-{subject}_ses-{ses}_T1w_brain_NT_pveseg.nii.gz
+				sub-{subject}_ses-{ses}_T1w_brain_NT_pve_2.nii.gz (WM)
+				sub-{subject}_ses-{ses}_T1w_brain_NT_pve_1.nii.gz
+				sub-{subject}_ses-{ses}_T1w_brain_NT_pve_0.nii.gz
+			masks
+				sub-{subject}_TUM_inv.nii.gz (inv_TUM)
+				sub-{subject}_TUM_in_T1w.nii.gz (TUM_in_T1)
+				sub-{subject}_TUM_in_T1w_bin.nii.gz (TUM_bin)
 			dwi
-                        	sub-{subject}_ses-{ses}_dwi_av_b0.nii.gz
-				sub-{subject}_ses-{ses}_dwi_bias_in_diff.nii.gz
-				sub-{subject}_ses-{ses}_dwi_b0_corrected.nii.gz
+				sub-{subject}_ses-{ses}_dwi_av_b0.nii.gz (B0)
+				sub-{subject}_ses-{ses}_dwi_bias_in_diff.nii.gz (BF_in_B0)
+				sub-{subject}_ses-{ses}_dwi_b0_corrected.nii.gz (B0_bias_corrected)
 				sub-{subject}_ses-{ses}_dwi_WM_in_diff.nii.gz
-				sub-{subject}_ses-{ses}_dwi_WM_thr.nii.gz
+				sub-{subject}_ses-{ses}_dwi_WM_thr.nii.gz (WM_thr)
 				sub-{subject}_ses-{ses}_dwi_bias_in_b0_WM.nii.gz
-				sub-{subject}_ses-{ses}_dwi_OEDEMA.nii.gz
-				sub-{subject}_ses-{ses}_dwi_signal.txt
+				sub-{subject}_ses-{ses}_dwi_OEDEMA.nii.gz (OEDEMA)
+				sub-{subject}_ses-{ses}_dwi_signal.txt (WM_file)
 			xfms
-				sub-{subject}_ses-{ses}_FLAIR_to_T1w.mat
-				sub-{subject}_ses-{ses}_T1w_to_diff.mat
+				sub-{subject}_ses-{ses}_FLAIR_to_T1w.mat (FLAIR_to_T1_mat)
+				sub-{subject}_ses-{ses}_T1w_to_diff.mat (T1_to_B0_mat)
