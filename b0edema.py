@@ -24,7 +24,7 @@ def preproc1(T1w: In, T1w_brain: Out, T1w_brain_mask: Out):
 
     bet(T1w, T1w_brain, mask=T1w_brain_mask)
 
-def preproc2(T1w_brain: In, T1w_brain_mask: In, FLAIR: In, B0: In, TUM: In, FLAIR_warp_basename: Ref, T1w_warp_basename: Ref, FLAIR_to_T1_mat: Out, T1_to_B0_mat: Out, TUM_in_T1: Out, TUM_bin: Out, inv_TUM: Out, T1w_NT: Out):
+def preproc2(T1w_brain: In, FLAIR: In, B0: In, FLAIR_warp_basename: Ref, T1w_warp_basename: Ref, FLAIR_to_T1_mat: Out, T1_to_B0_mat: Out):
     """
     Stage 2 of oedema_pipe, generating transformation matrices.
 
@@ -77,10 +77,10 @@ def oedema_pipeline(T1w_NT: In, BF: In, B0: In, T1_to_B0_mat: In, WM: In, BF_in_
     else:
         raise FileNotFoundError(f"Bias field {BF} not found.")
 
-    def save_sig(WM_Sig: In, file: Out):
-        """
+def save_sig(WM_Sig: float, WM_file: Out):
+    """
         Save the WM_sig value to a text file.
 
-        """
-    with open(file, 'w') as f:
+    """
+    with open(WM_file, "w") as f:
         f.write(f"WM_sig: {WM_Sig}\n")
