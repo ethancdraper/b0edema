@@ -14,7 +14,6 @@ import os
 pipe = Pipeline()
 
 @pipe
-
 def preproc1(T1w: In, T1w_brain: Out, T1w_brain_mask: Out):
     """
     Stage 1 of oedema_pipe, preprocessing the input images.
@@ -24,6 +23,7 @@ def preproc1(T1w: In, T1w_brain: Out, T1w_brain_mask: Out):
 
     bet(T1w, T1w_brain, mask=T1w_brain_mask)
 
+@pipe
 def preproc2(T1w_brain: In, FLAIR: In, B0: In, FLAIR_warp_basename: Ref, T1w_warp_basename: Ref, FLAIR_to_T1_mat: Out, T1_to_B0_mat: Out):
     """
     Stage 2 of oedema_pipe, generating transformation matrices.
@@ -39,6 +39,7 @@ def preproc2(T1w_brain: In, FLAIR: In, B0: In, FLAIR_warp_basename: Ref, T1w_war
     else:
             raise FileNotFoundError(f"Brain extracted T1w not found.")
 
+@pipe
 def preproc3(FLAIR_to_T1_mat: In, TUM: In, T1w_brain: In, T1w_brain_mask: In, TUM_in_T1: Out, TUM_bin: Out, inv_TUM: Out, T1w_NT: Out):
     """
     Stage 3 of oedema_pipe, applying registrations.
@@ -54,6 +55,7 @@ def preproc3(FLAIR_to_T1_mat: In, TUM: In, T1w_brain: In, T1w_brain_mask: In, TU
     else:
         raise FileNotFoundError(f"Transformation matrix {FLAIR_to_T1_mat} not found.")
 
+@pipe
 def oedema_pipeline(T1w_NT: In, BF: In, B0: In, T1_to_B0_mat: In, WM: In, BF_in_B0: Out, B0_bias_corrected: Out, WM_in_B0: Out, WM_thr: Out, BF_in_B0_WM_sig: Out, OEDEMA: Out):
     """
     Stage 4 of oedema_pipe, calculating oedema in b0.
@@ -77,6 +79,7 @@ def oedema_pipeline(T1w_NT: In, BF: In, B0: In, T1_to_B0_mat: In, WM: In, BF_in_
     else:
         raise FileNotFoundError(f"Bias field {BF} not found.")
 
+@pipe
 def save_sig(WM_Sig: float, WM_file: Out):
     """
         Save the WM_sig value to a text file.
@@ -84,3 +87,8 @@ def save_sig(WM_Sig: float, WM_file: Out):
     """
     with open(WM_file, "w") as f:
         f.write(f"WM_sig: {WM_Sig}\n")
+
+if __name__ == "__main__":
+    # Actually load the file-tree
+    tree = FileTree.read("data.tree")
+    pipe.cli(tree)
