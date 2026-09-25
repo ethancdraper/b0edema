@@ -64,12 +64,23 @@ def oedema_pipeline(T1w_NT: In, BF: In, B0: In, T1_to_B0_mat: In, WM: In, BF_in_
 
     fast(T1w_NT, out=FAST, b=True)
 
+    if os.path.exists(BF):
+        print(f"FAST completed. Calculating oedema in b0")
+        applyxfm(BF, B0, T1_to_B0_mat, out=BF_in_B0)
+        fslmaths(B0).div(BF_in_B0).run(B0_bias_corrected)
+        applyxfm(WM, B0, T1_to_B0_mat, out=WM_in_B0)
+        fslmaths(WM_in_B0).thr(0.8).bin().run(WM_thr)
+        WM_sig = fslstats(B0_bias_corrected).k(WM_thr).M.run()
+        print(f"{sub}: WM_sig:", WM_sig)
+        fslmaths(BF_in_B0).mul(WM_sig).run(BF_in_B0_WM_sig)
+        fslmaths(B0).div(BF_in_B0_WM_sig).run(OEDEMA)
+    else:
+        raise FileNotFoundError(f"Bias field {BF} not found.")
 
-    applyxfm(BF, B0, T1_to_B0_mat, out=BF_in_B0)
-    fslmaths(B0).div(BF_in_B0).run(B0_bias_corrected)
-    applyxfm(WM, B0, T1_to_B0_mat, out=WM_in_B0)
-    fslmaths(WM_in_B0).thr(0.8).bin().run(WM_thr)
-    WM_sig = fslstats(B0_bias_corrected).k(WM_thr).M.run()
-    print(f"{sub}: WM_sig:", WM_sig)
-    fslmaths(BF_in_B0).mul(WM_sig).run(BF_in_B0_WM_sig)
-    fslmaths(B0).div(BF_in_B0_WM_sig).run(OEDEMA)
+    def save_sig(WM_Sig: In, file: Out):
+        """
+        Save the WM_sig value to a text file.
+
+        """
+    with open(file, 'w') as f:
+        f.write(f"WM_sig: {WM_Sig}\n")
