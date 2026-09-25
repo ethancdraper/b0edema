@@ -1,3 +1,4 @@
 fslpy
+filetree
 numpy
 os
